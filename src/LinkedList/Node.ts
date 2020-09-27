@@ -1,9 +1,9 @@
 export default class Node<T> {
-  element: T;
-  next: Node<T> | undefined;
+  element: T | null = null;
+  next: Node<T> | null = null;
 
-  constructor(element: T) {
+  constructor(element: T | null, next: Node<T> | null = null) {
     this.element = element;
-    this.next = undefined;
+    this.next = next;
   }
 }
