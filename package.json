@@ -8,7 +8,8 @@
     "commit": "cz",
     "build": "tsc",
     "lint": "eslint",
-    "test": "jest"
+    "test": "jest",
+    "test-dev": "jest --watch"
   },
   "keywords": [],
   "author": "",
