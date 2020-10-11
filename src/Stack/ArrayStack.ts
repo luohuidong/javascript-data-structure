@@ -1,12 +1,6 @@
-interface ArrayStackInterface<T> {
-  push: (element: T) => void;
-  pop: () => T | undefined;
-  peek: () => T | undefined;
-  getSize: () => number;
-  isEmpty: () => boolean;
-}
+import type { StackInterface } from "./types";
 
-export default class ArrayStack<T> implements ArrayStackInterface<T> {
+export default class ArrayStack<T> implements StackInterface<T> {
   private stack: T[] = [];
 
   push(element: T): void {
