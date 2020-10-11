@@ -9,20 +9,23 @@ beforeEach(() => {
   }
 });
 
-test("从头部插入元素 addFirst", () => {
-  linkedList.add(0, 6);
+test("从头部插入节点 addFirst", () => {
+  linkedList.addFirst(6);
   expect(linkedList.toString()).toBe("6,1,2,3,4,5");
   expect(linkedList.getSize()).toBe(6);
+  expect(linkedList.head.element).toBe(6);
+  expect(linkedList.tail.element).toBe(5);
 });
 
-test("从尾部插入元素 addLast", () => {
+test("从尾部插入节点 addLast", () => {
   linkedList.addLast(1);
-  linkedList.add(linkedList.getSize(), 2);
-  expect(linkedList.toString()).toBe("1,2,3,4,5,1,2");
-  expect(linkedList.getSize()).toBe(7);
+  expect(linkedList.toString()).toBe("1,2,3,4,5,1");
+  expect(linkedList.getSize()).toBe(6);
+  expect(linkedList.head.element).toBe(1);
+  expect(linkedList.tail.element).toBe(1);
 });
 
-test("从中间插入元素 add", () => {
+test("从中间插入节点 add", () => {
   linkedList.add(2, 9);
   expect(linkedList.toString()).toBe("1,2,9,3,4,5");
 
@@ -32,7 +35,7 @@ test("从中间插入元素 add", () => {
   expect(linkedList.getSize()).toBe(7);
 });
 
-test("插入索引值超过链表元素个数的报错情况 add error", () => {
+test("插入索引值超过链表节点个数的报错情况 add error", () => {
   expect(() => {
     linkedList.add(6, 2);
   }).toThrow("Add failed. Illegal index");
@@ -45,50 +48,39 @@ test("插入索引值小于0的报错情况 add error", () => {
   }).toThrow("Add failed. Illegal index");
 });
 
-test("获取链表头部元素", () => {
+test("获取链表头部节点 getFirst", () => {
   expect(linkedList.getFirst()).toBe(1);
-  expect(linkedList.get(0)).toBe(1);
 
   linkedList.addFirst(10);
   expect(linkedList.getFirst()).toBe(10);
-  expect(linkedList.get(0)).toBe(10);
   expect(linkedList.toString()).toBe("10,1,2,3,4,5");
 
   linkedList.add(0, 2);
   expect(linkedList.getFirst()).toBe(2);
-  expect(linkedList.get(0)).toBe(2);
   expect(linkedList.toString()).toBe("2,10,1,2,3,4,5");
 });
 
-test("获取链表尾部元素", () => {
-  function getLastIndex() {
-    return linkedList.getSize() - 1;
-  }
+test("获取空链表第一个节点 getFirst error", () => {
+  const linkedList = new LinkedList();
+
+  expect(() => {
+    linkedList.getFirst();
+  }).toThrow("LinkedList is empty");
+});
+
+test("获取链表尾部节点 getLast", () => {
   expect(linkedList.getLast()).toBe(5);
-  expect(linkedList.get(getLastIndex())).toBe(5);
 
   linkedList.addLast(10);
   expect(linkedList.getLast()).toBe(10);
-  expect(linkedList.get(getLastIndex())).toBe(10);
   expect(linkedList.toString()).toBe("1,2,3,4,5,10");
 
   linkedList.add(linkedList.getSize(), 2);
   expect(linkedList.getLast()).toBe(2);
-  expect(linkedList.get(getLastIndex())).toBe(2);
   expect(linkedList.toString()).toBe("1,2,3,4,5,10,2");
 });
 
-test("获取链表中间的元素", () => {
-  expect(linkedList.get(1)).toBe(2);
-});
-
-test("获取超出边界的值", () => {
-  expect(() => {
-    linkedList.get(6);
-  }).toThrowError("Illegal index");
-});
-
-test("获取空链表最后一个元素", () => {
+test("获取空链表最后一个节点 getLast error", () => {
   const linkedList = new LinkedList();
 
   expect(() => {
@@ -96,37 +88,114 @@ test("获取空链表最后一个元素", () => {
   }).toThrowError("LinkedList is empty");
 });
 
-test("设置链表元素", () => {
+test("获取链表中间的节点 get", () => {
+  expect(linkedList.get(1)).toBe(2);
+});
+
+test("获取超出边界的值 get error", () => {
+  expect(() => {
+    linkedList.get(6);
+  }).toThrowError("Illegal index");
+});
+
+test("获取负数索引节点", () => {
+  expect(() => {
+    linkedList.get(-1);
+  }).toThrow("Illegal index");
+});
+
+test("设置链表节点 set", () => {
   linkedList.set(1, 4);
   expect(linkedList.get(1)).toBe(4);
 });
 
-test("设置超出范围的元素", () => {
+test("设置超出范围的节点 set Error", () => {
   expect(() => {
     linkedList.set(5, 50);
   }).toThrowError("Illegal index.");
 });
 
-test("查找元素", () => {
+test("查找节点 contains", () => {
   expect(linkedList.contains(3)).toBeTruthy();
 });
 
-test("查找不存在的元素", () => {
+test("查找不存在的节点 contains error", () => {
   expect(linkedList.contains(10)).toBeFalsy();
 });
 
-test("删除第一个元素", () => {
-  expect(linkedList.removeFirst()).toBe(1);
-  expect(linkedList.getSize()).toBe(4);
+test("删除中间节点 remove", () => {
+  expect(linkedList.remove(3)).toBe(4);
+  expect(linkedList.toString()).toBe("1,2,3,5");
+  expect(linkedList.remove(2)).toBe(3);
+  expect(linkedList.toString()).toBe("1,2,5");
+  expect(linkedList.getSize()).toBe(3);
 });
 
-test("删除最后一个元素", () => {
+test("删除越界节点 remove error", () => {
+  expect(() => {
+    linkedList.remove(5);
+  }).toThrow();
+});
+
+test("删除链表头节点 removeFirst", () => {
+  const linkedList = new LinkedList();
+  linkedList.addFirst(1);
+  expect(linkedList.getSize()).toBe(1);
+  expect(linkedList.toString()).toBe("1");
+  expect(linkedList.head.element).toBe(1);
+  expect(linkedList.tail.element).toBe(1);
+
+  // 删除只有一个元素的头节点
+  linkedList.removeFirst();
+  expect(linkedList.getSize()).toBe(0);
+  expect(linkedList.toString()).toBe("");
+  expect(linkedList.head).toBeNull();
+  expect(linkedList.tail).toBeNull();
+
+  linkedList.addFirst(1);
+  linkedList.addFirst(2);
+  expect(linkedList.toString()).toBe("2,1");
+  expect(linkedList.head.element).toBe(2);
+  expect(linkedList.tail.element).toBe(1);
+
+  linkedList.removeFirst();
+  expect(linkedList.toString()).toBe("1");
+  expect(linkedList.head.element).toBe(1);
+  expect(linkedList.tail.element).toBe(1);
+});
+
+test("删除空链表的头节点 removeFirst error", () => {
+  const linkedList = new LinkedList();
+  expect(() => {
+    linkedList.removeFirst();
+  }).toThrowError("LinkedList is Empty");
+});
+
+test("删除尾结点 removeLast", () => {
   expect(linkedList.removeLast()).toBe(5);
   expect(linkedList.getSize()).toBe(4);
+  expect(linkedList.toString()).toBe("1,2,3,4");
+  expect(linkedList.head.element).toBe(1);
+  expect(linkedList.tail.element).toBe(4);
+
+  for (let i = 0; i < 3; i++) {
+    linkedList.removeLast();
+  }
+  expect(linkedList.getSize()).toBe(1);
+  expect(linkedList.toString()).toBe("1");
+  expect(linkedList.head.element).toBe(1);
+  expect(linkedList.tail.element).toBe(1);
+
+  linkedList.removeLast()
+  expect(linkedList.getSize()).toBe(0);
+  expect(linkedList.toString()).toBe("");
+  expect(linkedList.head).toBeNull();
+  expect(linkedList.tail).toBeNull();
 });
 
-test("删除中间元素", () => {
-  expect(linkedList.remove(3)).toBe(4);
-  expect(linkedList.remove(2)).toBe(3);
-  expect(linkedList.getSize()).toBe(3);
+test("删除空链表的尾结点", () => {
+  const linkedList = new LinkedList();
+  expect(() => {
+    linkedList.removeLast();
+  }).toThrowError("LinkedList is Empty");
 });
