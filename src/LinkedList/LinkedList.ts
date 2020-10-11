@@ -8,9 +8,17 @@ export default class LinkedList<T> implements LinkedListInferface<T> {
   /** 链表节点个数 */
   private size = 0;
   /** 链表头节点 */
-  private head: Node<T> | null = null;
+  private _head: Node<T> | null = null;
   /** 链表尾节点 */
-  private tail: Node<T> | null = null;
+  private _tail: Node<T> | null = null;
+
+  get head(): Node<T> | null {
+    return this._head;
+  }
+
+  get tail(): Node<T> | null {
+    return this._tail;
+  }
 
   /**
    * 向链表某个索引位置添加新节点, O(n)
@@ -26,23 +34,23 @@ export default class LinkedList<T> implements LinkedListInferface<T> {
       if (this.size === 0) {
         const newNode = new Node<T>(element, null, null);
 
-        this.head = newNode;
-        this.tail = newNode;
+        this._head = newNode;
+        this._tail = newNode;
       } else {
-        const head = this.head as Node<T>;
+        const head = this._head as Node<T>;
         const newNode = new Node<T>(element, head.prev, head);
         head.prev = newNode;
 
-        this.head = newNode;
+        this._head = newNode;
       }
     } else if (index === this.size) {
-      const tail = this.tail as Node<T>;
+      const tail = this._tail as Node<T>;
       const newNode = new Node<T>(element, tail, tail.next);
       tail.next = newNode;
 
-      this.tail = newNode;
+      this._tail = newNode;
     } else {
-      let prevNode: Node<T> = this.head as Node<T>;
+      let prevNode: Node<T> = this._head as Node<T>;
       for (let i = 1; i < index; i++) {
         prevNode = prevNode.next as Node<T>;
       }
@@ -82,12 +90,12 @@ export default class LinkedList<T> implements LinkedListInferface<T> {
       throw new Error("Illegal index");
     }
 
-    let current: Node<T> = this.head as Node<T>;
+    let current: Node<T> = this._head as Node<T>;
 
     if (index === 0) {
-      current = this.head as Node<T>;
+      current = this._head as Node<T>;
     } else if (index === this.size - 1) {
-      current = this.tail as Node<T>;
+      current = this._tail as Node<T>;
     } else {
       for (let i = 0; i < index; i++) {
         current = current.next as Node<T>;
@@ -117,7 +125,7 @@ export default class LinkedList<T> implements LinkedListInferface<T> {
       throw new Error("Illegal index.");
     }
 
-    let current = this.head as Node<T>;
+    let current = this._head as Node<T>;
 
     for (let i = 0; i < index; i++) {
       current = current.next as Node<T>;
@@ -131,7 +139,7 @@ export default class LinkedList<T> implements LinkedListInferface<T> {
    * @param element
    */
   contains(element: T): boolean {
-    let cur = this.head;
+    let cur = this._head;
 
     while (cur != null) {
       if (_.isEqual(cur.element, element)) {
@@ -145,7 +153,7 @@ export default class LinkedList<T> implements LinkedListInferface<T> {
 
   toString(): string {
     let str = "";
-    let cur = this.head;
+    let cur = this._head;
 
     while (cur != null) {
       str += cur.next ? cur.element + "," : cur.element;
@@ -165,6 +173,10 @@ export default class LinkedList<T> implements LinkedListInferface<T> {
    * @param index
    */
   remove(index: number): T {
+    if (this.size === 0) {
+      throw new Error("LinkedList is Empty");
+    }
+
     if (index < 0 || index >= this.size) {
       throw new Error("Index is illegal");
     }
@@ -172,24 +184,31 @@ export default class LinkedList<T> implements LinkedListInferface<T> {
     let delNode: Node<T>;
 
     if (this.size === 1) {
-      delNode = this.head as Node<T>;
+      delNode = this._head as Node<T>;
       delNode.prev = null;
       delNode.next = null;
 
       // 如果链表只有一个节点，那么删除节点之后应该清空 head 和 tail
-      this.head = null;
-      this.tail = null;
+      this._head = null;
+      this._tail = null;
     } else {
       if (index === 0) {
-        delNode = this.head as Node<T>;
-        this.head = delNode.next;
+        delNode = this._head as Node<T>;
+        this._head = delNode.next;
         delNode.next = null;
       } else if (index === this.size - 1) {
-        delNode = this.tail as Node<T>;
-        this.tail = delNode.next;
+        delNode = this._tail as Node<T>;
+        const preNode = delNode.prev as Node<T>;
+        const nextNode = delNode.next as null;
+
+        preNode.next = nextNode;
+
         delNode.prev = null;
+        delNode.next = null;
+
+        this._tail = preNode;
       } else {
-        delNode = this.head as Node<T>;
+        delNode = this._head as Node<T>;
         for (let i = 0; i < index; i++) {
           delNode = delNode.next as Node<T>;
         }
