@@ -2,96 +2,122 @@
 import _ from "lodash";
 
 import Node from "./Node";
-
-interface LinkedListInferface<T> {
-  /** 向链表某个索引位置添加元素, O(n) */
-  add: (index: number, element: T) => void;
-  /** 向链表开头插入一个元素, O(1) */
-  addFirst: (element: T) => void;
-  /** 向链表尾部添加一个新元素，O(n) */
-  addLast: (element: T) => void;
-
-  /** 根据索引获取链表元素, O(n) */
-  get: (index: number) => T;
-  /** 获取链表第一个元素, O(1) */
-  getFirst: () => T;
-  /** 获取链表最后一个元素, O(n) */
-  getLast: () => T;
-
-  /** 从链表中移除一个元素，返回删除的元素。O(n)（在链表中不是一个常用的操作，练习用） */
-  remove: (index: number) => T;
-  /** 从链表中删除第一个元素, O(1) */
-  removeFirst: () => T;
-  /** 从链表中删除最后一个元素, O(n) */
-  removeLast: () => T;
-
-  /** 修改链表索引为 index 的元素, O(n)（不是常用操作，练习用） */
-  set: (index: number, element: T) => void;
-  /** 查找链表中是否有元素 e, O(n) */
-  contains(element: T): boolean;
-  /** 如果链表中不包含任何元素，返回true，如果链表长度大于0则返回false */
-  isEmpty: () => void;
-  /** 返回链表包含的元素个数，与数组的length属性类似 */
-  getSize: () => number;
-  /** 返回表示整个链表的字符串。由于列表项使用了Node类，就需要重写继承自JavaScript对象默认的toString方法，让其只输出元素的值 */
-  toString: () => string;
-}
+import type { LinkedListInferface } from "./types";
 
 export default class LinkedList<T> implements LinkedListInferface<T> {
+  /** 链表节点个数 */
   private size = 0;
-  private dummyHead = new Node<T>(null);
+  /** 链表头节点 */
+  private head: Node<T> | null = null;
+  /** 链表尾节点 */
+  private tail: Node<T> | null = null;
 
+  /**
+   * 向链表某个索引位置添加新节点, O(n)
+   * @param index
+   * @param element
+   */
   add(index: number, element: T): void {
     if (index < 0 || index > this.size) {
       throw new Error("Add failed. Illegal index");
     }
 
-    let prev = this.dummyHead;
-    // 找到 index - 1 的元素
-    for (let i = 0; i < index; i++) {
-      prev = prev.next as Node<T>;
-    }
+    if (index === 0) {
+      if (this.size === 0) {
+        const newNode = new Node<T>(element, null, null);
 
-    prev.next = new Node<T>(element, prev.next);
+        this.head = newNode;
+        this.tail = newNode;
+      } else {
+        const head = this.head as Node<T>;
+        const newNode = new Node<T>(element, head.prev, head);
+        head.prev = newNode;
+
+        this.head = newNode;
+      }
+    } else if (index === this.size) {
+      const tail = this.tail as Node<T>;
+      const newNode = new Node<T>(element, tail, tail.next);
+      tail.next = newNode;
+
+      this.tail = newNode;
+    } else {
+      let prevNode: Node<T> = this.head as Node<T>;
+      for (let i = 1; i < index; i++) {
+        prevNode = prevNode.next as Node<T>;
+      }
+      const newNode = new Node<T>(element, prevNode, prevNode.next);
+      prevNode.next = newNode;
+    }
 
     this.size++;
   }
 
+  /**
+   * 向链表头部添加新的节点，O(1)
+   * @param element
+   */
   addFirst(element: T): void {
     this.add(0, element);
   }
 
+  /**
+   * 向链表尾部添加新的节点，O(1)
+   * @param element
+   */
   addLast(element: T): void {
     this.add(this.size, element);
   }
 
+  /**
+   * 获取某个索引位置的节点的值
+   * @param index
+   */
   get(index: number): T {
+    if (this.size === 0) {
+      throw new Error("LinkedList is empty");
+    }
+
     if (index < 0 || index >= this.size) {
       throw new Error("Illegal index");
     }
 
-    let current = this.dummyHead.next as Node<T>;
-    for (let i = 0; i < index; i++) {
-      current = current.next as Node<T>;
+    let current: Node<T> = this.head as Node<T>;
+
+    if (index === 0) {
+      current = this.head as Node<T>;
+    } else if (index === this.size - 1) {
+      current = this.tail as Node<T>;
+    } else {
+      for (let i = 0; i < index; i++) {
+        current = current.next as Node<T>;
+      }
     }
 
     return current.element as T;
   }
 
+  /** 获取第一个节点的值，O(1) */
   getFirst(): T {
     return this.get(0);
   }
 
+  /** 获取最后一个节点的值，O(1) */
   getLast(): T {
     return this.get(this.size - 1);
   }
 
+  /**
+   * 设置某个索引的节点的值，O(n)
+   * @param index
+   * @param element
+   */
   set(index: number, element: T): void {
     if (index < 0 || index >= this.size) {
       throw new Error("Illegal index.");
     }
 
-    let current = this.dummyHead.next as Node<T>;
+    let current = this.head as Node<T>;
 
     for (let i = 0; i < index; i++) {
       current = current.next as Node<T>;
@@ -100,8 +126,12 @@ export default class LinkedList<T> implements LinkedListInferface<T> {
     current.element = element;
   }
 
+  /**
+   * 查看链表中，是否有对应某个值的节点，O(n)
+   * @param element
+   */
   contains(element: T): boolean {
-    let cur = this.dummyHead.next;
+    let cur = this.head;
 
     while (cur != null) {
       if (_.isEqual(cur.element, element)) {
@@ -115,35 +145,61 @@ export default class LinkedList<T> implements LinkedListInferface<T> {
 
   toString(): string {
     let str = "";
-    let cur = this.dummyHead.next;
+    let cur = this.head;
 
     while (cur != null) {
-      str += cur.element + "->";
+      str += cur.next ? cur.element + "," : cur.element;
       cur = cur.next;
     }
-    str += "null";
 
     return str;
   }
 
+  /** 获取链表节点个数 */
   getSize(): number {
     return this.size;
   }
 
+  /**
+   * 删除某个索引位置的节点
+   * @param index
+   */
   remove(index: number): T {
     if (index < 0 || index >= this.size) {
       throw new Error("Index is illegal");
     }
 
-    // 找出被删除元素的前一个元素
-    let prevNode = this.dummyHead;
-    for (let i = 0; i < index; i++) {
-      prevNode = prevNode.next as Node<T>;
-    }
+    let delNode: Node<T>;
 
-    const delNode = prevNode.next as Node<T>;
-    prevNode.next = delNode.next;
-    delNode.next = null;
+    if (this.size === 1) {
+      delNode = this.head as Node<T>;
+      delNode.prev = null;
+      delNode.next = null;
+
+      // 如果链表只有一个节点，那么删除节点之后应该清空 head 和 tail
+      this.head = null;
+      this.tail = null;
+    } else {
+      if (index === 0) {
+        delNode = this.head as Node<T>;
+        this.head = delNode.next;
+        delNode.next = null;
+      } else if (index === this.size - 1) {
+        delNode = this.tail as Node<T>;
+        this.tail = delNode.next;
+        delNode.prev = null;
+      } else {
+        delNode = this.head as Node<T>;
+        for (let i = 0; i < index; i++) {
+          delNode = delNode.next as Node<T>;
+        }
+
+        (delNode.next as Node<T>).prev = delNode.prev;
+        (delNode.prev as Node<T>).next = delNode.next;
+        delNode.prev = null;
+        delNode.next = null;
+      }
+    }
 
     this.size--;
 
