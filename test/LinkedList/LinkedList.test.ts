@@ -199,3 +199,12 @@ test("删除空链表的尾结点", () => {
     linkedList.removeLast();
   }).toThrowError("LinkedList is Empty");
 });
+
+test("判断空链表是否为空", () => {
+  const linkedList = new LinkedList();
+  expect(linkedList.isEmpty()).toBeTruthy();
+})
+
+test("判断非空链表是否为非空", () => {
+  expect(linkedList.isEmpty()).toBeFalsy();
+})
