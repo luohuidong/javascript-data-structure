@@ -1,12 +1,6 @@
-interface ArrayQueueInterface<T> {
-  enqueue: (element: T) => void;
-  dequeue: () => T | undefined;
-  getFront: () => T | undefined;
-  getSize: () => number;
-  isEmpty: () => boolean;
-}
+import type { QueueInterface } from "./types";
 
-export default class ArrayQueue<T> implements ArrayQueueInterface<T> {
+export default class ArrayQueue<T> implements QueueInterface<T> {
   private queue: T[] = [];
 
   getSize(): number {
