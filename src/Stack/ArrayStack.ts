@@ -22,4 +22,8 @@ export default class ArrayStack<T> implements StackInterface<T> {
   isEmpty(): boolean {
     return this.stack.length === 0;
   }
+
+  toString(): string {
+    return this.stack.join(",");
+  }
 }
