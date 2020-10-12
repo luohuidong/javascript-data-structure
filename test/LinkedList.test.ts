@@ -1,4 +1,4 @@
-import LinkedList from "../../src/LinkedList/LinkedList";
+import LinkedList from "../src/LinkedList/LinkedList";
 
 let linkedList: LinkedList<number>;
 
@@ -186,7 +186,7 @@ test("删除尾结点 removeLast", () => {
   expect(linkedList.head.element).toBe(1);
   expect(linkedList.tail.element).toBe(1);
 
-  linkedList.removeLast()
+  linkedList.removeLast();
   expect(linkedList.getSize()).toBe(0);
   expect(linkedList.toString()).toBe("");
   expect(linkedList.head).toBeNull();
@@ -203,8 +203,8 @@ test("删除空链表的尾结点", () => {
 test("判断空链表是否为空", () => {
   const linkedList = new LinkedList();
   expect(linkedList.isEmpty()).toBeTruthy();
-})
+});
 
 test("判断非空链表是否为非空", () => {
   expect(linkedList.isEmpty()).toBeFalsy();
-})
+});
