@@ -1,8 +1,8 @@
 {
-  "name": "node-typescript-teamplate",
+  "name": "javascript-data-structure",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "JavaScript data structure",
+  "main": "dist/index.js",
   "scripts": {
     "dev": "tsc --watch",
     "commit": "cz",
