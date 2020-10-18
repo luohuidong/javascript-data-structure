@@ -1,1 +1,1 @@
-export { default as LinkedList } from "./LinkedList/LinkedList";
+export { LinkedList, LinkedListNode } from "./LinkedList/";
