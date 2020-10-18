@@ -1,5 +1,5 @@
 {
-  "name": "javascript-data-structure",
+  "name": "@luohuidong/javascript-data-structure",
   "version": "1.0.0",
   "description": "JavaScript data structure",
   "main": "dist/index.js",
@@ -11,8 +11,10 @@
     "test": "jest",
     "test-dev": "jest --watch"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "DataStructure"
+  ],
+  "author": "luohuidong",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.11.4",
