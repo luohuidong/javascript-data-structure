@@ -4,4 +4,5 @@ export interface StackInterface<T> {
   peek: () => T | undefined;
   getSize: () => number;
   isEmpty: () => boolean;
+  clear: () => void;
 }
