@@ -49,3 +49,8 @@ test("查看空栈元素个数", () => {
   const stack = new Stack<number>();
   expect(stack.getSize()).toBe(0);
 });
+
+test("清空栈元素", () => {
+  stack.clear();
+  expect(stack.getSize()).toBe(0);
+});
