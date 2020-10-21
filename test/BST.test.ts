@@ -40,6 +40,15 @@ test("广度优先遍历", () => {
   expect(result).toEqual([11, 7, 15, 5, 9, 13, 20, 3, 6, 8, 10, 12, 14, 18, 25]);
 });
 
+test("空二叉搜索树的广度优先遍历", () => {
+  const bst = new BST();
+  let count = 0;
+  bst.levelOrder(() => {
+    count++;
+  });
+  expect(count).toBe(0);
+});
+
 test("前序遍历", () => {
   const result = [];
   bst.preOrderTraverse((number) => {
