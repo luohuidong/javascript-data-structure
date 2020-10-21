@@ -9,12 +9,12 @@ interface Callback<T> {
 
 export default class BSTNotTraverse<T> extends BST<T> {
   preOrderTraverse(callback: Callback<T>): void {
-    if (!this.root) {
+    if (!this._root) {
       return;
     }
 
     const stack = new Stack<Node<T>>();
-    stack.push(this.root);
+    stack.push(this._root);
 
     while (!stack.isEmpty()) {
       const current = stack.pop() as Node<T>;
