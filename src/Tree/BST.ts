@@ -32,6 +32,9 @@ interface BSTInterface<T> {
   removeMin: (key: T) => Node<T> | null;
   /** 删除树中的最大键 */
   removeMax: (key: T) => Node<T> | null;
+
+  /** 二叉搜索树是否为空 */
+  isEmpty: () => boolean;
 }
 
 interface ICompareFunction<T> {
@@ -351,5 +354,9 @@ export default class BST<T> implements BSTInterface<T> {
       node.right = this._removeMinNode(node.right);
       return node;
     }
+  }
+
+  isEmpty(): boolean {
+    return this.size === 0;
   }
 }
