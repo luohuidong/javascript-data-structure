@@ -39,22 +39,26 @@ interface ICompareFunction<T> {
 }
 
 export default class BST<T> implements BSTInterface<T> {
-  protected root: Node<T> | null = null;
+  protected _root: Node<T> | null = null;
   protected compareFunction: ICompareFunction<T>;
 
   constructor(compareFucnton: ICompareFunction<T> = defaultCompare) {
     this.compareFunction = compareFucnton;
   }
 
+  get root(): Node<T> | null {
+    return this._root;
+  }
+
   /**
-   * 向二分搜索树中添加新的元素
+   * 向二分搜索树中添加新的元素，如果元素重复，则数不会发生任何变化
    * @param key
    */
   insert(key: T): void {
-    if (this.root === null) {
-      this.root = new Node<T>(key);
+    if (this._root === null) {
+      this._root = new Node<T>(key);
     } else {
-      this._insertNode(this.root, key);
+      this._insertNode(this._root, key);
     }
   }
 
@@ -72,7 +76,7 @@ export default class BST<T> implements BSTInterface<T> {
       } else {
         this._insertNode(node.left, key);
       }
-    } else {
+    } else if (result === Compare.BIGGER_THAN) {
       if (node.right === null) {
         node.right = new Node(key);
       } else {
@@ -86,7 +90,7 @@ export default class BST<T> implements BSTInterface<T> {
    * @param callback
    */
   preOrderTraverse(callback: Callback<T>): void {
-    this._preOrderTraverseNode(this.root, callback);
+    this._preOrderTraverseNode(this._root, callback);
   }
 
   /**
@@ -107,7 +111,7 @@ export default class BST<T> implements BSTInterface<T> {
    * @param callback
    */
   inOrderTraverse(callback: Callback<T>): void {
-    this._inOrderTraverseNode(this.root, callback);
+    this._inOrderTraverseNode(this._root, callback);
   }
 
   /**
@@ -128,7 +132,7 @@ export default class BST<T> implements BSTInterface<T> {
    * @param callback
    */
   postOrderTraverse(callback: Callback<T>): void {
-    this._postOrderTraverseNode(this.root, callback);
+    this._postOrderTraverseNode(this._root, callback);
   }
 
   /**
@@ -145,14 +149,14 @@ export default class BST<T> implements BSTInterface<T> {
   }
 
   levelOrder(callback: Callback<T>): void {
-    if (!this.root) {
+    if (!this._root) {
       return;
     }
 
     const queue = new ArrayQueue<Node<T>>();
-    queue.enqueue(this.root);
+    queue.enqueue(this._root);
 
-    if (!queue.isEmpty()) {
+    while (!queue.isEmpty()) {
       const node = queue.dequeue() as Node<T>;
 
       callback(node.key);
@@ -171,7 +175,7 @@ export default class BST<T> implements BSTInterface<T> {
    * 获取二叉树中的最小键
    */
   min(): Node<T> | null {
-    return this._min(this.root);
+    return this._min(this._root);
   }
 
   /**
@@ -192,7 +196,7 @@ export default class BST<T> implements BSTInterface<T> {
    * 获取二叉树中最大的键
    */
   max(): Node<T> | null {
-    return this._max(this.root);
+    return this._max(this._root);
   }
 
   private _max(node: Node<T> | null): Node<T> | null {
@@ -210,7 +214,7 @@ export default class BST<T> implements BSTInterface<T> {
    * @param key
    */
   search(key: T): boolean {
-    return this._search(this.root, key);
+    return this._search(this._root, key);
   }
 
   /**
@@ -238,7 +242,7 @@ export default class BST<T> implements BSTInterface<T> {
     const min = this.min();
 
     if (min) {
-      this._removeMinNode(this.root as Node<T>);
+      this._removeMinNode(this._root as Node<T>);
     }
 
     return min;
@@ -264,7 +268,7 @@ export default class BST<T> implements BSTInterface<T> {
     const max = this.max();
 
     if (max) {
-      this._removeMaxNode(this.root as Node<T>);
+      this._removeMaxNode(this._root as Node<T>);
     }
 
     return max;
@@ -282,7 +286,7 @@ export default class BST<T> implements BSTInterface<T> {
   }
 
   remove(key: T): void {
-    this.root = this._removeNode(this.root, key); // 1
+    this._root = this._removeNode(this._root, key); // 1
   }
 
   /**
@@ -296,7 +300,6 @@ export default class BST<T> implements BSTInterface<T> {
    */
   private _removeNode(node: Node<T> | null, key: T): Node<T> | null {
     if (node === null) {
-      // 2
       return null;
     }
 
@@ -304,7 +307,7 @@ export default class BST<T> implements BSTInterface<T> {
 
     if (result === Compare.LESS_THAN) {
       // 如果当前
-      node.left = this._removeNode(node.left, key); // 4
+      node.left = this._removeNode(node.left, key);
       return node;
     } else if (result === Compare.BIGGER_THAN) {
       node.right = this._removeNode(node.right, key);
