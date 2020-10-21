@@ -41,6 +41,7 @@ interface ICompareFunction<T> {
 export default class BST<T> implements BSTInterface<T> {
   protected _root: Node<T> | null = null;
   protected compareFunction: ICompareFunction<T>;
+  protected _size = 0;
 
   constructor(compareFucnton: ICompareFunction<T> = defaultCompare) {
     this.compareFunction = compareFucnton;
@@ -48,6 +49,10 @@ export default class BST<T> implements BSTInterface<T> {
 
   get root(): Node<T> | null {
     return this._root;
+  }
+
+  get size(): number {
+    return this._size;
   }
 
   /**
@@ -73,12 +78,14 @@ export default class BST<T> implements BSTInterface<T> {
     if (result === Compare.LESS_THAN) {
       if (node.left === null) {
         node.left = new Node(key);
+        this._size++;
       } else {
         this._insertNode(node.left, key);
       }
     } else if (result === Compare.BIGGER_THAN) {
       if (node.right === null) {
         node.right = new Node(key);
+        this._size++;
       } else {
         this._insertNode(node.right, key);
       }
@@ -257,6 +264,7 @@ export default class BST<T> implements BSTInterface<T> {
     if (node.left == null) {
       const rightNode = node.right;
       node.right = null;
+      this._size--;
       return rightNode;
     } else {
       node.left = this._removeMinNode(node.left);
@@ -278,6 +286,7 @@ export default class BST<T> implements BSTInterface<T> {
     if (node.right === null) {
       const leftNode = node.left;
       node.left = null;
+      this._size--;
       return leftNode;
     } else {
       node.right = this._removeMaxNode(node.right);
@@ -313,6 +322,8 @@ export default class BST<T> implements BSTInterface<T> {
       node.right = this._removeNode(node.right, key);
       return node;
     } else {
+      this._size--;
+
       // 第一种情况：处理当前节点为叶子节点的情况：
       if (node.left === null && node.right === null) {
         node = null;
