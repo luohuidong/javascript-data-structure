@@ -63,11 +63,7 @@ export default class BST<T> implements BSTInterface<T> {
    * @param key
    */
   insert(key: T): void {
-    if (this._root === null) {
-      this._root = new Node<T>(key);
-    } else {
-      this._insertNode(this._root, key);
-    }
+    this._root = this._insertNode(this._root, key);
   }
 
   /**
@@ -75,24 +71,21 @@ export default class BST<T> implements BSTInterface<T> {
    * @param node
    * @param element
    */
-  private _insertNode(node: Node<T>, key: T): void {
+  private _insertNode(node: Node<T> | null, key: T): Node<T> {
+    if (node === null) {
+      this._size++;
+      return new Node(key);
+    }
+
     const result = this.compareFunction(key, node.key);
 
     if (result === Compare.LESS_THAN) {
-      if (node.left === null) {
-        node.left = new Node(key);
-        this._size++;
-      } else {
-        this._insertNode(node.left, key);
-      }
+      node.left = this._insertNode(node.left, key);
     } else if (result === Compare.BIGGER_THAN) {
-      if (node.right === null) {
-        node.right = new Node(key);
-        this._size++;
-      } else {
-        this._insertNode(node.right, key);
-      }
+      node.right = this._insertNode(node.right, key);
     }
+
+    return node;
   }
 
   /**
