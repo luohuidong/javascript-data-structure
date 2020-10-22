@@ -30,7 +30,7 @@ test("插入元素", () => {
     result.push(number);
   });
   expect(result).toEqual([11, 7, 15, 5, 9, 13, 20, 3, 6, 8, 10, 12, 14, 18, 25]);
-  expect(bst.size).toBe(14);
+  expect(bst.size).toBe(15);
 });
 
 test("广度优先遍历", () => {
@@ -109,7 +109,7 @@ test("删除最小节点", () => {
     result.push(num);
   });
   expect(result).toEqual([5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 18, 20, 25]);
-  expect(bst.size).toBe(13);
+  expect(bst.size).toBe(14);
 });
 
 test("删除最大节点", () => {
@@ -120,7 +120,7 @@ test("删除最大节点", () => {
     result.push(num);
   });
   expect(result).toEqual([3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 18, 20]);
-  expect(bst.size).toBe(13);
+  expect(bst.size).toBe(14);
 });
 
 test("删除某个节点", () => {
@@ -131,5 +131,5 @@ test("删除某个节点", () => {
     result.push(num);
   });
   expect(result).toEqual([3, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 18, 20, 25]);
-  expect(bst.size).toBe(13);
+  expect(bst.size).toBe(14);
 });
