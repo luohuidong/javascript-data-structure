@@ -1,7 +1,7 @@
 export interface SetInterface<T> {
   add: (element: T) => void;
-  delete: (element: T) => boolean;
+  delete: (element: T) => void;
   has: (element: T) => boolean;
-  clear: () => void;
+  clear?: () => void;
   size: () => number;
 }
