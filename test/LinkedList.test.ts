@@ -200,6 +200,13 @@ test("删除空链表的尾结点", () => {
   }).toThrowError("LinkedList is Empty");
 });
 
+test("测试删除指定元素", () => {
+  const result = linkedList.removeElement(5);
+  expect(result).toBeTruthy();
+  expect(linkedList.getSize()).toBe(4);
+  expect(linkedList.toString()).toBe("1,2,3,4");
+});
+
 test("判断空链表是否为空", () => {
   const linkedList = new LinkedList();
   expect(linkedList.isEmpty()).toBeTruthy();
