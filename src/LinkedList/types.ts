@@ -19,6 +19,8 @@ export interface LinkedListInferface<T> {
   removeFirst: () => T;
   /** 从链表中删除最后一个元素, O(n) */
   removeLast: () => T;
+  /** 删除链表中指定元素的节点 */
+  removeElement: (val: T) => void;
 
   /** 修改链表索引为 index 的元素, O(n)（不是常用操作，练习用） */
   set: (index: number, element: T) => void;

@@ -233,6 +233,34 @@ export default class LinkedList<T> implements LinkedListInferface<T> {
     return this.remove(this.size - 1);
   }
 
+  removeElement(val: T): boolean {
+    let result = false;
+    let current = this.head;
+
+    while (current) {
+      if (current.element !== val) {
+        current = current.next;
+        continue;
+      }
+
+      if (current === this.head) {
+        this._head = current.next;
+        !this._head && (this._tail = null);
+      } else {
+        const prev = current.prev as Node<T>;
+        const next = current.next;
+        prev.next = next;
+        current.next = null;
+        current.prev = null;
+      }
+      this.size--;
+      result = true;
+      break;
+    }
+
+    return result;
+  }
+
   isEmpty(): boolean {
     return this.size === 0;
   }
