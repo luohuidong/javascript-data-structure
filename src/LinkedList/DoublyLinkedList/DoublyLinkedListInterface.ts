@@ -1,4 +1,4 @@
-export interface LinkedListInferface<T> {
+export interface DoublyLinkedListInferface<T> {
   /** 向链表某个索引位置添加元素 */
   add: (index: number, element: T) => void;
   /** 向链表开头插入一个元素, O(1) */

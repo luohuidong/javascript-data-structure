@@ -1,22 +1,22 @@
 // 最基础的链表
 import _ from "lodash";
 
-import Node from "./Node";
-import type { LinkedListInferface } from "./types";
+import DoublyLinkedListNode from "./DoublyLinkedListNode";
+import type { DoublyLinkedListInferface } from "./DoublyLinkedListInterface";
 
-export default class LinkedList<T> implements LinkedListInferface<T> {
+export default class DoublyLinkedList<T> implements DoublyLinkedListInferface<T> {
   /** 链表节点个数 */
   private size = 0;
   /** 链表头节点 */
-  private _head: Node<T> | null = null;
+  private _head: DoublyLinkedListNode<T> | null = null;
   /** 链表尾节点 */
-  private _tail: Node<T> | null = null;
+  private _tail: DoublyLinkedListNode<T> | null = null;
 
-  get head(): Node<T> | null {
+  get head(): DoublyLinkedListNode<T> | null {
     return this._head;
   }
 
-  get tail(): Node<T> | null {
+  get tail(): DoublyLinkedListNode<T> | null {
     return this._tail;
   }
 
@@ -32,29 +32,29 @@ export default class LinkedList<T> implements LinkedListInferface<T> {
 
     if (index === 0) {
       if (this.size === 0) {
-        const newNode = new Node<T>(element, null, null);
+        const newNode = new DoublyLinkedListNode<T>(element, null, null);
 
         this._head = newNode;
         this._tail = newNode;
       } else {
-        const head = this._head as Node<T>;
-        const newNode = new Node<T>(element, head.prev, head);
+        const head = this._head as DoublyLinkedListNode<T>;
+        const newNode = new DoublyLinkedListNode<T>(element, head.prev, head);
         head.prev = newNode;
 
         this._head = newNode;
       }
     } else if (index === this.size) {
-      const tail = this._tail as Node<T>;
-      const newNode = new Node<T>(element, tail, tail.next);
+      const tail = this._tail as DoublyLinkedListNode<T>;
+      const newNode = new DoublyLinkedListNode<T>(element, tail, tail.next);
       tail.next = newNode;
 
       this._tail = newNode;
     } else {
-      let prevNode: Node<T> = this._head as Node<T>;
+      let prevNode: DoublyLinkedListNode<T> = this._head as DoublyLinkedListNode<T>;
       for (let i = 1; i < index; i++) {
-        prevNode = prevNode.next as Node<T>;
+        prevNode = prevNode.next as DoublyLinkedListNode<T>;
       }
-      const newNode = new Node<T>(element, prevNode, prevNode.next);
+      const newNode = new DoublyLinkedListNode<T>(element, prevNode, prevNode.next);
       prevNode.next = newNode;
     }
 
@@ -90,15 +90,15 @@ export default class LinkedList<T> implements LinkedListInferface<T> {
       throw new Error("Illegal index");
     }
 
-    let current: Node<T> = this._head as Node<T>;
+    let current: DoublyLinkedListNode<T> = this._head as DoublyLinkedListNode<T>;
 
     if (index === 0) {
-      current = this._head as Node<T>;
+      current = this._head as DoublyLinkedListNode<T>;
     } else if (index === this.size - 1) {
-      current = this._tail as Node<T>;
+      current = this._tail as DoublyLinkedListNode<T>;
     } else {
       for (let i = 0; i < index; i++) {
-        current = current.next as Node<T>;
+        current = current.next as DoublyLinkedListNode<T>;
       }
     }
 
@@ -125,10 +125,10 @@ export default class LinkedList<T> implements LinkedListInferface<T> {
       throw new Error("Illegal index.");
     }
 
-    let current = this._head as Node<T>;
+    let current = this._head as DoublyLinkedListNode<T>;
 
     for (let i = 0; i < index; i++) {
-      current = current.next as Node<T>;
+      current = current.next as DoublyLinkedListNode<T>;
     }
 
     current.element = element;
@@ -181,10 +181,10 @@ export default class LinkedList<T> implements LinkedListInferface<T> {
       throw new Error("Index is illegal");
     }
 
-    let delNode: Node<T>;
+    let delNode: DoublyLinkedListNode<T>;
 
     if (this.size === 1) {
-      delNode = this._head as Node<T>;
+      delNode = this._head as DoublyLinkedListNode<T>;
       delNode.prev = null;
       delNode.next = null;
 
@@ -193,12 +193,12 @@ export default class LinkedList<T> implements LinkedListInferface<T> {
       this._tail = null;
     } else {
       if (index === 0) {
-        delNode = this._head as Node<T>;
+        delNode = this._head as DoublyLinkedListNode<T>;
         this._head = delNode.next;
         delNode.next = null;
       } else if (index === this.size - 1) {
-        delNode = this._tail as Node<T>;
-        const preNode = delNode.prev as Node<T>;
+        delNode = this._tail as DoublyLinkedListNode<T>;
+        const preNode = delNode.prev as DoublyLinkedListNode<T>;
         const nextNode = delNode.next as null;
 
         preNode.next = nextNode;
@@ -208,13 +208,13 @@ export default class LinkedList<T> implements LinkedListInferface<T> {
 
         this._tail = preNode;
       } else {
-        delNode = this._head as Node<T>;
+        delNode = this._head as DoublyLinkedListNode<T>;
         for (let i = 0; i < index; i++) {
-          delNode = delNode.next as Node<T>;
+          delNode = delNode.next as DoublyLinkedListNode<T>;
         }
 
-        (delNode.next as Node<T>).prev = delNode.prev;
-        (delNode.prev as Node<T>).next = delNode.next;
+        (delNode.next as DoublyLinkedListNode<T>).prev = delNode.prev;
+        (delNode.prev as DoublyLinkedListNode<T>).next = delNode.next;
         delNode.prev = null;
         delNode.next = null;
       }
@@ -247,7 +247,7 @@ export default class LinkedList<T> implements LinkedListInferface<T> {
         this._head = current.next;
         !this._head && (this._tail = null);
       } else {
-        const prev = current.prev as Node<T>;
+        const prev = current.prev as DoublyLinkedListNode<T>;
         const next = current.next;
         prev.next = next;
         current.next = null;

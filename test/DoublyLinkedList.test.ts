@@ -1,9 +1,9 @@
-import LinkedList from "../src/LinkedList/LinkedList";
+import { DoublyLinkedList } from "../src/index";
 
-let linkedList: LinkedList<number>;
+let linkedList: DoublyLinkedList<number>;
 
 beforeEach(() => {
-  linkedList = new LinkedList<number>();
+  linkedList = new DoublyLinkedList<number>();
   for (let i = 5; i > 0; i--) {
     linkedList.addFirst(i);
   }
@@ -42,7 +42,7 @@ test("插入索引值超过链表节点个数的报错情况 add error", () => {
 });
 
 test("插入索引值小于0的报错情况 add error", () => {
-  const linkedList = new LinkedList<number>();
+  const linkedList = new DoublyLinkedList<number>();
   expect(() => {
     linkedList.add(-1, 2);
   }).toThrow("Add failed. Illegal index");
@@ -61,7 +61,7 @@ test("获取链表头部节点 getFirst", () => {
 });
 
 test("获取空链表第一个节点 getFirst error", () => {
-  const linkedList = new LinkedList();
+  const linkedList = new DoublyLinkedList();
 
   expect(() => {
     linkedList.getFirst();
@@ -81,7 +81,7 @@ test("获取链表尾部节点 getLast", () => {
 });
 
 test("获取空链表最后一个节点 getLast error", () => {
-  const linkedList = new LinkedList();
+  const linkedList = new DoublyLinkedList();
 
   expect(() => {
     linkedList.getLast();
@@ -138,7 +138,7 @@ test("删除越界节点 remove error", () => {
 });
 
 test("删除链表头节点 removeFirst", () => {
-  const linkedList = new LinkedList();
+  const linkedList = new DoublyLinkedList();
   linkedList.addFirst(1);
   expect(linkedList.getSize()).toBe(1);
   expect(linkedList.toString()).toBe("1");
@@ -165,7 +165,7 @@ test("删除链表头节点 removeFirst", () => {
 });
 
 test("删除空链表的头节点 removeFirst error", () => {
-  const linkedList = new LinkedList();
+  const linkedList = new DoublyLinkedList();
   expect(() => {
     linkedList.removeFirst();
   }).toThrowError("LinkedList is Empty");
@@ -194,7 +194,7 @@ test("删除尾结点 removeLast", () => {
 });
 
 test("删除空链表的尾结点", () => {
-  const linkedList = new LinkedList();
+  const linkedList = new DoublyLinkedList();
   expect(() => {
     linkedList.removeLast();
   }).toThrowError("LinkedList is Empty");
@@ -208,7 +208,7 @@ test("测试删除指定元素", () => {
 });
 
 test("判断空链表是否为空", () => {
-  const linkedList = new LinkedList();
+  const linkedList = new DoublyLinkedList();
   expect(linkedList.isEmpty()).toBeTruthy();
 });
 
