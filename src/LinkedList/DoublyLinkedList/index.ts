@@ -1,2 +1,2 @@
 export { default as DoublyLinkedList } from "./DoublyLinkedList";
-export { default as DoublyLinkedListNode } from "./DoublyLinkedListNode";
+export { DoublyLinkedListNode } from "./DoublyLinkedListNode";

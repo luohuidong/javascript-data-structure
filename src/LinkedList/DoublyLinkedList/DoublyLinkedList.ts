@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-import DoublyLinkedListNode from "./DoublyLinkedListNode";
+import { DoublyLinkedListNode } from "./DoublyLinkedListNode";
 import type { DoublyLinkedListInferface } from "./DoublyLinkedListInterface";
 
 class DoublyLinkedList<T> implements DoublyLinkedListInferface<T> {
