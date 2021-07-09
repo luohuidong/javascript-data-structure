@@ -1,10 +1,9 @@
-// 最基础的链表
 import _ from "lodash";
 
 import DoublyLinkedListNode from "./DoublyLinkedListNode";
 import type { DoublyLinkedListInferface } from "./DoublyLinkedListInterface";
 
-export default class DoublyLinkedList<T> implements DoublyLinkedListInferface<T> {
+class DoublyLinkedList<T> implements DoublyLinkedListInferface<T> {
   /** 链表节点个数 */
   private size = 0;
   /** 链表头节点 */
@@ -50,11 +49,16 @@ export default class DoublyLinkedList<T> implements DoublyLinkedListInferface<T>
 
       this._tail = newNode;
     } else {
-      let prevNode: DoublyLinkedListNode<T> = this._head as DoublyLinkedListNode<T>;
+      let prevNode: DoublyLinkedListNode<T> = this
+        ._head as DoublyLinkedListNode<T>;
       for (let i = 1; i < index; i++) {
         prevNode = prevNode.next as DoublyLinkedListNode<T>;
       }
-      const newNode = new DoublyLinkedListNode<T>(element, prevNode, prevNode.next);
+      const newNode = new DoublyLinkedListNode<T>(
+        element,
+        prevNode,
+        prevNode.next
+      );
       prevNode.next = newNode;
     }
 
@@ -90,7 +94,9 @@ export default class DoublyLinkedList<T> implements DoublyLinkedListInferface<T>
       throw new Error("Illegal index");
     }
 
-    let current: DoublyLinkedListNode<T> = this._head as DoublyLinkedListNode<T>;
+    let current: DoublyLinkedListNode<T> = this._head as DoublyLinkedListNode<
+      T
+    >;
 
     if (index === 0) {
       current = this._head as DoublyLinkedListNode<T>;
@@ -265,3 +271,5 @@ export default class DoublyLinkedList<T> implements DoublyLinkedListInferface<T>
     return this.size === 0;
   }
 }
+
+export default DoublyLinkedList;
